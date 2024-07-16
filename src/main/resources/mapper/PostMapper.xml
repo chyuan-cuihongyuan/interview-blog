@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chyuan.blog.dao.PostMapper">
+
+    <resultMap id="BaseResultMap" type="com.chyuan.blog.model.Post">
+        <id column="post_id" property="postId" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="user_id" property="userId" />
+        <result column="created" property="created" />
+        <result column="last_modified" property="lastModified" />
+    </resultMap>
+
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="postId">
+        INSERT INTO posts (title, content, user_id, created, last_modified)
+        VALUES (#{title}, #{content}, #{userId}, #{created}, #{lastModified})
+    </insert>
+
+    <select id="findAllPosts" resultMap="BaseResultMap">
+        SELECT * FROM posts ORDER BY created DESC
+    </select>
+
+    <select id="findPostsByUserId" resultMap="BaseResultMap">
+        SELECT * FROM posts WHERE user_id = #{userId} ORDER BY created DESC
+    </select>
+
+    <select id="findPostById" resultMap="BaseResultMap">
+        SELECT * FROM posts WHERE post_id = #{postId}
+    </select>
+
+    <update id="updatePost">
+        UPDATE posts SET title = #{title}, content = #{content}, last_modified = #{lastModified}
+        WHERE post_id = #{postId}
+    </update>
+
+    <delete id="deletePost">
+        DELETE FROM posts WHERE post_id = #{postId}
+    </delete>
+</mapper>
